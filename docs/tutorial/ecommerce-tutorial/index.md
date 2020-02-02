@@ -357,7 +357,7 @@ export default props => (
 )
 ```
 
-You can validate your query and see what data is being returned in GraphiQL, which is available at http://localhost:8000/___graphql when running `npm run develop`.
+You can validate your query and see what data is being returned in GraphQL, which is available at http://localhost:8000/___graphql when running `npm run develop`.
 
 Once you're happy with your query, create a new page where you can import the newly created Sku component:
 
@@ -465,7 +465,8 @@ Lastly, you need to refactor your `Skus` component to initialize the Stripe.js c
 ```jsx:title=src/components/Products/Skus.js
 import React, { Component } from 'react'
 import { graphql, StaticQuery } from 'gatsby'
-import SkuCard from './SkuCard' // highlight-line
+// highlight-start
+import SkuCard from './SkuCard'
 
 const containerStyles = {
   display: 'flex',
@@ -479,7 +480,6 @@ class Skus extends Component {
   // Initialise Stripe.js with your publishable key.
   // You can find your key in the Dashboard:
   // https://dashboard.stripe.com/account/apikeys
-  // highlight-start
   state = {
     stripe: null,
   }
@@ -488,10 +488,10 @@ class Skus extends Component {
     const stripe = window.Stripe(process.env.GATSBY_STRIPE_PUBLIC_KEY)
     this.setState({ stripe })
   }
-  // highlight-end
 
   render() {
     return (
+{/* highlight-end */}
       <StaticQuery
         query={graphql`
           query SkusForProduct {
@@ -510,7 +510,7 @@ class Skus extends Component {
           }
         `}
         render={({ skus }) => (
-          <div style={containerStyles}>
+          <div style={containerStyles}>  
             {skus.edges.map(({ node: sku }) => (
               <SkuCard key={sku.id} sku={sku} stripe={this.state.stripe} /> {/* highlight-line */}
             ))}
